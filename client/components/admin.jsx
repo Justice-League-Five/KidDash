@@ -5,7 +5,7 @@ import { defaultFormatUtc } from 'moment';
 import Login from "./login.jsx";
 
 
-// ---------material-ui
+//----material-ui
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem'
 import Paper from '@material-ui/core/Paper';
@@ -14,6 +14,8 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
 
+
+// menuItems is used in side the render for the pop out menu
 const menuItems = [
   {
     display: 'Newsletters',
@@ -42,7 +44,7 @@ class Admin extends React.Component {
     super(props);
     this.state = {
       caption: '',
-      value: '',
+      docUrl: '',
       category: 'Subject',
       imgUrl: 'default',
       pickImg: '',
@@ -51,17 +53,20 @@ class Admin extends React.Component {
       ourImg: false
     }
 
-    this.handleClick = this.handleClick.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    
+
+    this.setDocUrl = this.setDocUrl.bind(this);
     this.setCategory = this.setCategory.bind(this);
     this.setcaption = this.setcaption.bind(this);
     this.setUrl = this.setUrl.bind(this);
     this.selectImg = this.selectImg.bind(this);
-    this.renderImgInput = this.renderImgInput.bind(this);
+    this.setOurImg = this.setOurImg.bind(this);  
     this.setAnchor = this.setAnchor.bind(this);
     this.unsetAnchor = this.unsetAnchor.bind(this);
+    this.renderImgInput = this.renderImgInput.bind(this);
     this.renderOurImgInput = this.renderOurImgInput.bind(this);
-    this.setOurImg = this.setOurImg.bind(this);
+    this.submitDoc = this.submitDoc.bind(this);
+
   }
 
   setAnchor(event) {
@@ -90,8 +95,8 @@ class Admin extends React.Component {
     this.setState({imgUrl: event.target.value});
   };
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
+  setDocUrl(event) {
+    this.setState({ docUrl: event.target.value});
   };
 
   selectImg() {
@@ -132,16 +137,16 @@ class Admin extends React.Component {
       )
   }
 
-  handleClick() {
+  submitDoc() {
     let fileInfo = {};
     fileInfo.category = this.state.category;
     fileInfo.caption = this.state.caption;
-    fileInfo.doc_url = this.state.value;
+    fileInfo.doc_url = this.state.docUrl;
     fileInfo.img_url = this.state.imgUrl;
 
     console.log(`send off category-->: ${fileInfo.category}`);
     console.log(`send off caption-->: ${fileInfo.caption}`);
-    console.log(`send off url-->: ${fileInfo.doc_url}`);
+    console.log(`send off docUrl-->: ${fileInfo.doc_url}`);
     console.log(`send off img_url-->: ${fileInfo.img_url}`);
 
     axios.post('/api/docs', {fileInfo})
@@ -164,6 +169,7 @@ class Admin extends React.Component {
             <label>
               Pick a category:
               <div>
+              {/* from button to /Menu us the pop open menu for picking a category */}
                 <Button
                   aria-owns={anchor ? 'simple-menu' : null}
                   aria-haspopup="true"
@@ -202,9 +208,8 @@ class Admin extends React.Component {
               Upload the document URL:
               <input style={{marginLeft: 5, maxWidth: 300, height: 8, padding: 5, borderRadius: 5}} 
                 type="text"
-                value={this.state.value}
-                onChange={this.handleChange}
-                placeholder='File url for upload' />
+                placeholder='File url for upload' 
+                onChange={this.setDocUrl} />
             </label>
             <br></br>
             <h4>Step 4</h4>           
@@ -214,14 +219,11 @@ class Admin extends React.Component {
                     onClick={this.selectImg}>
               </input>&nbsp;
               Upload my own image
-                  
-
                 </label>
             {this.renderImgInput()}
                 <div>
                 <br />
                   <label>
-                 
                     <input style={{marginLeft: 5, height: 20, width: 20, margin: 'auto', verticalAlign: 'bottom'}}
                       type='checkBox'
                       onClick={this.setOurImg}>
@@ -233,7 +235,7 @@ class Admin extends React.Component {
             <br></br>          
             <h3>Final Step</h3>
             <Button
-              onClick={this.handleClick}
+              onClick={this.submitDoc}
               variant="contained"
             >
               Submit document 
@@ -254,5 +256,6 @@ export default Admin;
  * menuItems object is used to render the menu items in the Category popout menu
  * renderImgInput and renderOurImgInput are the check boxed in step 4 based on what is click
  * setCategory sets a varable this to newThis because 'this' was losing value and thats how i fixed it 
+ * 
  */
 
