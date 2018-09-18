@@ -16,95 +16,18 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { Drawer, AppBar, Toolbar } from '@material-ui/core';
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { Typography, TextField, Divider } from '@material-ui/core';
 import { ChevronLeft, Home, Email, Edit, Favorite } from '@material-ui/icons';
 
-const drawerWidth = 740;
-
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  appFrame: {
-    height: 430,
-    zIndex: 1,
-    overflow: 'hidden',
-    position: 'relative',
-    display: 'flex',
-    width: '100%',
-  },
-  appBar: {
-    position: 'absolute',
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  'appBarShift-left': {
-    marginLeft: drawerWidth,
-  },
-  menuButton: {
-    marginLeft: 12,
-    marginRight: 20,
-  },
-  hide: {
-    display: 'none',
-  },
-  drawerPaper: {
-    position: 'relative',
-    width: drawerWidth,
-  },
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
-  content: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: theme.spacing.unit * 3,
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  'content-left': {
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  'contentShift-left': {
-    marginLeft: 0,
-  }
-});
 
 class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
-<<<<<<< HEAD
-      anchor: 'left',
-      view: 'home'
-=======
->>>>>>> 5c9d53469d5a0f1eab7a001b858cade719eadcb3
+      open: false
     };
     this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
     this.handleDrawerClose = this.handleDrawerClose.bind(this);
@@ -124,11 +47,8 @@ class Header extends React.Component {
       <Drawer
         variant="persistent"
         open={open}
-        classes={{
-          paper: styles.drawerPaper,
-        }}
       >
-        <div className={styles.drawerHeader} style={{ textAlign: 'right' }} >
+        <div style={{ textAlign: 'right' }} >
           <IconButton onClick={this.handleDrawerClose}>
             <ChevronLeft />
           </IconButton>
@@ -181,45 +101,78 @@ class Header extends React.Component {
     );
 
     return (
-      <div className={styles.root}>
-        <div className={styles.appFrame}>
-<<<<<<< HEAD
-          <div className="Header"style={{ display: "flex", alignItems: 'flex-end', marginBottom: 75}}>
-            <AppBar style={{backgroundColor: "Blue"}} className={classNames(styles.appBar, {
-=======
-          <div className="Header"style={{ display: "flex", alignItems: 'flex-end', marginBottom: 80}}>
-            <AppBar style={{backgroundColor: "Teal"}} className={classNames(styles.appBar, {
->>>>>>> 5c9d53469d5a0f1eab7a001b858cade719eadcb3
-              [styles.appBarShift]: open,
-              [styles['appBarShift-left']]: open,
-            })}>
-              <Toolbar disableGutters={!open}>
-                <IconButton color="inherit" aria-label="Open drawer" onClick={this.handleDrawerOpen} className={classNames(styles.menuButton, open && styles.hide)}>
-                  <MenuIcon />
-                </IconButton>
-                <Typography variant="title" color="inherit" className="AppName" noWrap>
-                  Kid Dash
-                </Typography>
-                {
-                  this.props.getFiles !== undefined ? (<div style={{ marginLeft: 20}}>
-                      <FilterBar getFiles={this.props.getFiles}/>
-                    </div>) : null
-                }
-              </Toolbar>
-            </AppBar>
-            {drawer}
-            <main
-              className={classNames(styles.content, styles['content-left'], {
-                [styles.contentShift]: open,
-                [styles['contentShift-left']]: open,
-              })}>
-              <div className={styles.drawerHeader} />
-            </main>
-          </div>
-        </div>
+      <div className="Header" style={{ display: "flex", alignItems: 'flex-end', marginBottom: 80}}>
+        <AppBar style={{backgroundColor: "Teal"}}>
+          <Toolbar>
+            <IconButton color="inherit" aria-label="Open drawer" onClick={this.handleDrawerOpen}>
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="title" color="inherit" className="AppName" noWrap>
+              Kid Dash
+            </Typography>
+            {
+              this.props.getFiles !== undefined ? (<div style={{ marginLeft: 20}}>
+                  <FilterBar getFiles={this.props.getFiles}/>
+                </div>) : null
+            }
+          </Toolbar>
+        </AppBar>
+        {drawer}
       </div>
     );
   }
 }
 
+
 export default Header;
+
+
+/**
+ * NOTES: 
+ * Header Component
+ * Material UI was used to create the persistent drawer menu using the <Drawer> component. 
+ * To populate the menu with options, the Material UI <List> component was nested within the <Drawer> 
+ * component. Inside of the Material UI List component, list items are added using the <ListItem> component 
+ * Nested inside of the <ListItem> component  are <ListItemIcon> and <ListItemText> components. The 
+ * <ListItemIcon> wraps around one of many Material UI icon components, for example we used <Home /> 
+ * and <Edit /> to name a few. The <ListItemText> component is used to give each <ListItem> component text
+ * via its "primary" attribute. Which ever value given to the primary attribute will display as the text for
+ * a specific list item. There are other attributes that can be used to have the <ListItemText> component
+ * display text for that specific list item that I have not yet explored. An example of a list with only
+ * one item can be down as follows: 
+ *       
+ * <Drawer                                        // Drawer menu component
+    variant="persistent"                          // The vairant attribute determines type of menu it is
+    open={open}                                   // Determines if menu will show (true) or not (false)
+  >
+  <div style={{ textAlign: 'right' }} >
+    <IconButton onClick={this.handleDrawerClose}> // Wraps around an Icon
+      <ChevronLeft />                             // Icon that looks like < when clicked closes drawer  
+    </IconButton>
+  </div>
+
+  <Divider />                                     // Makes horizontal line
+
+  <List component="nav">                          // Makes a list
+    <ListItem button                              // Makes a list item
+      selected={this.props.view === 'Home'}   
+      onClick={() => {
+        this.props.changeView('Home');
+        this.handleDrawerClose();
+    }}>
+    <ListItemIcon>                              // Wraps around an Icon
+      <Home />
+    </ListItemIcon>
+    <ListItemText primary="Home" />             // Allows us to add text via the primary attribute
+  </ListItem>
+</Drawer>
+
+To further compartmentalize the code, notice from lines 46 - 101 we store the whole Drawer component 
+menu along with all of its option in a variable called drawer. On line 120 it is used in the return
+statement. 
+
+Menu Items that are not functional yet:
+  Email lines 82-89
+  Favorites lines 91-98
+Also can add additional menu options.
+ */
